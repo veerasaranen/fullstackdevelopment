@@ -42,13 +42,20 @@ const App = () => {
           setNewFiltered(filtered.concat(returnedPerson))
           setNewNumber("")
           setNewName("")
+          setNewNotification(`${newName} was successfully added to contacts`)
+          setTimeout(() => {
+            setNewNotification(null)
+          }, 5000)
         })
-      setNewNotification(`${newName} was successfully added to contacts`)
-      setTimeout(() => {
-        setNewNotification(null)
-      }, 5000)
+        .catch(error => {
+          setNewError(error.response.data.error)
+          setTimeout(() => {
+            setNewError(null)
+          }, 5000)
+        })
     } else {
       //alert(`${newName} is already added to phonebook`), i commented the old exercice
+      // There's no error message for validation here (exrecice 3.19) as the added names will always be longer than 3 letters (the validation is already taken care of there)
       if (window.confirm(`${newName} is already added to phonebook. Do you want to replace the old contact?`)) {
         const changing = persons.find( person => person.name.toLowerCase() === newName.toLowerCase() )
         const changedPerson = { ...changing, number: newNumber }
@@ -69,7 +76,7 @@ const App = () => {
             setTimeout(() => {
               setNewNotification(null)
             }, 5000)
-          })
+           })
       } else {
         setNewNotification(`changes to ${newName} were canceled`)
         setTimeout(() => {

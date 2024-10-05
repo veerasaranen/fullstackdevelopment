@@ -1,15 +1,15 @@
-# fly.toml app configuration file generated for part3-damp-shadow-2950 on 2024-10-02T14:52:25+03:00
+# fly.toml app configuration file generated for part3-cool-feather-8042 on 2024-10-05T09:38:35+03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'part3-damp-shadow-2950'
-primary_region = 'cdg'
+app = 'part3-cool-feather-8042'
+primary_region = 'otp'
 
 [build]
 
 [env]
-  PORT = '3000'
+  PORT = "3000"
 
 [http_service]
   internal_port = 3000
