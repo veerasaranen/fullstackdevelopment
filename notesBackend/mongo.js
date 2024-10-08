@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
+const logger = require('./utils/logger')
 
 if (process.argv.length < 3) {
-  console.log('give password as argument')
+  logger.info('give password as argument')
   process.exit(1)
 }
 
@@ -32,7 +33,7 @@ mongoose.connect(url).then(() => {
   */
   Note.find({}).then(result => {
     result.forEach(note => {
-      console.log(note)
+      logger.info(note)
     })
     mongoose.connection.close()
   })

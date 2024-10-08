@@ -71,12 +71,12 @@ const App = () => {
               setNewNotification(null)
             }, 5000)
           })
-          .catch(error => {
+          .catch(
             setNewError(`Oops, ${newName} was already deleted from server`)
-            setTimeout(() => {
-              setNewNotification(null)
-            }, 5000)
-           })
+          )
+          setTimeout(() => {
+            setNewError(null)
+          }, 5000)
       } else {
         setNewNotification(`changes to ${newName} were canceled`)
         setTimeout(() => {
