@@ -121,6 +121,73 @@ describe('apis', () => {
 
     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
   })
+
+  test('deleting a blog works if id is valid', async () => {
+    const blogsAtFirst = await helper.blogsInDb()
+    const blog = blogsAtFirst[0]
+
+    await api
+      .delete(`/api/blogs/${blog.id}`)
+      .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length - 1)
+
+    const ids = blogsAtEnd.map( blog => blog.id )
+    assert(!ids.includes(blog.id))
+  })
+
+  test('deleting a blog does not work with an invalid id', async () => {
+    const blogsAtFirst = await helper.blogsInDb()
+    const blog = blogsAtFirst[0]
+
+    await api
+      .delete(`/api/blogs/123`)
+      .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+  })
+
+  test('updating a blog works if id is valid', async () => {
+    const blogsAtFirst = await helper.blogsInDb()
+    const blog = blogsAtFirst[0]
+
+    updatedBlog = {
+      likes: 22
+    }
+
+    await api
+      .put(`/api/blogs/${blog.id}`)
+      .send(updatedBlog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+    assert.strictEqual(blogsAtEnd[0].likes, updatedBlog.likes)
+  })
+
+  test('updating a blog does not work with an invalid id', async () => {
+    const blogsAtFirst = await helper.blogsInDb()
+    const blog = blogsAtFirst[0]
+
+    updatedBlog = {
+      likes: 22
+    }
+
+    await api
+      .put(`/api/blogs/123`)
+      .send(updatedBlog)
+      .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd[0].likes, blog.likes)
+  })
 })
 
 after(async () => {

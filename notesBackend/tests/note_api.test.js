@@ -104,7 +104,6 @@ test('a specific note can be viewed', async () => {
   
     const contents = notesAtEnd.map(r => r.content)
     assert(!contents.includes(noteToDelete.content))
-  
     assert.strictEqual(notesAtEnd.length, helper.initialNotes.length - 1)
   })
 

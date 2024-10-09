@@ -1,5 +1,6 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
+require('express-async-errors')
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({})
@@ -26,6 +27,29 @@ blogsRouter.get('/', async (request, response) => {
   
     const result = await blog.save()
     response.status(201).json(result)
+  })
+
+  blogsRouter.delete('/:id', async (request, response) => {
+    await Blog.findByIdAndDelete(request.params.id)
+    response.status(204).end()
+  })
+
+  blogsRouter.put('/:id', async (request, response) => {
+    const blog = await Blog.findById(request.params.id)
+    const body = request.body
+
+    // you can only update the likes, other stuff is ignored
+
+    const newBlog = {
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      likes: body.likes || 0
+    }
+
+    const updated = await Blog.findByIdAndUpdate(request.params.id, newBlog, { new: true })
+    response.json(updated)
+
   })
 
 module.exports = blogsRouter
