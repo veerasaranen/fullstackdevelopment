@@ -6,6 +6,7 @@ const notesRouter = require('./controllers/notes')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
+require('express-async-errors')
 
 mongoose.set('strictQuery', false)
 
